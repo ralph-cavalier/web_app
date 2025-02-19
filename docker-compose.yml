@@ -15,7 +15,11 @@ services:
       context: ./frontend
       dockerfile: Dockerfile
     volumes:
-      - ./frontend/node/frontend:/usr/src/app/frontend
-    command: npm start
+      - ./frontend:/usr/src/app  # 修正: frontend全体をマウント
+      - /usr/src/app/node_modules # 修正: node_modulesを除外
+    command: ["npm", "run", "dev"] # 修正: `npm start` ではなく `npm run dev`
     ports:
       - "3000:3000"
+    environment:
+      - NODE_ENV=development
+      - CHOKIDAR_USEPOLLING=true
